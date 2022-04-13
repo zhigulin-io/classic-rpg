@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import ru.drifles.crpg.callback.ErrorCallback;
 import ru.drifles.crpg.callback.KeyCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
-import ru.drifles.crpg.object.Triangle;
+import ru.drifles.crpg.object.test.ColorizedRect;
 
 import java.util.logging.Logger;
 
@@ -62,7 +62,7 @@ public class ClassicRPG {
     private void launch() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        Triangle t = new Triangle();
+        ColorizedRect t = new ColorizedRect();
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT);

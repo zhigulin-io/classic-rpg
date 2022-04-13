@@ -1,6 +1,6 @@
-package ru.drifles.crpg.object;
+package ru.drifles.crpg.object.test;
 
-import ru.drifles.crpg.ShaderProgram;
+import ru.drifles.crpg.common.ShaderProgram;
 
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;

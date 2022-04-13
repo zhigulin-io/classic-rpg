@@ -1,8 +1,7 @@
-package ru.drifles.crpg;
+package ru.drifles.crpg.common;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Objects;
 import java.util.stream.Collectors;
 

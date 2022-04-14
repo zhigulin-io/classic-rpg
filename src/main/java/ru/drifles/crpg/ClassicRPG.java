@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import ru.drifles.crpg.callback.ErrorCallback;
 import ru.drifles.crpg.callback.KeyCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
-import ru.drifles.crpg.object.test.ColorizedRect;
+import ru.drifles.crpg.object.test.TexturedRect;
 
 import java.util.logging.Logger;
 
@@ -57,12 +57,15 @@ public class ClassicRPG {
         glfwSwapInterval(1);
 
         createCapabilities();
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     private void launch() {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-        ColorizedRect t = new ColorizedRect();
+        var t = new TexturedRect();
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT);

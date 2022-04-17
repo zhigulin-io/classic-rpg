@@ -1,6 +1,6 @@
 package ru.drifles.crpg.common;
 
-public class Position {
+public final class Position {
     private int x;
     private int y;
 

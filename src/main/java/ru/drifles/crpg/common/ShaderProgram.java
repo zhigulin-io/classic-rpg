@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import static org.lwjgl.opengl.GL20.*;
 
-public class ShaderProgram {
+public final class ShaderProgram {
 
     private final int program;
 

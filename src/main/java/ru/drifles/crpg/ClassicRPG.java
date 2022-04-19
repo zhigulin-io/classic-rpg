@@ -6,8 +6,8 @@ import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import ru.drifles.crpg.callback.ErrorCallback;
 import ru.drifles.crpg.callback.KeyCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
-import ru.drifles.crpg.common.Color;
-import ru.drifles.crpg.object.world.Tile;
+import ru.drifles.crpg.object.Grid;
+import ru.drifles.crpg.object.world.World;
 
 import java.util.logging.Logger;
 
@@ -18,8 +18,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ClassicRPG {
     private static final Logger LOG = Logger.getLogger(ClassicRPG.class.getName());
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 800;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 600;
     private static final String TITLE = "Classic RPG";
     private static final GLFWErrorCallback ERROR_CALLBACK = new ErrorCallback();
     private static final GLFWWindowCloseCallback WINDOW_CLOSE_CALLBACK = new WindowCloseCallback();
@@ -66,15 +66,14 @@ public class ClassicRPG {
     private void launch() {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-        var t1 = new Tile(2, 2);
-        var t2 = new Tile(2, 1);
-        t2.setColor(Color.RED);
+        var world = new World();
+        var grid = new Grid();
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT);
 
-            t1.draw();
-            t2.draw();
+            world.draw();
+            grid.draw();
 
             glfwSwapBuffers(window);
             glfwPollEvents();

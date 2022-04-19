@@ -1,7 +1,12 @@
 package ru.drifles.crpg.common;
 
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
+import ru.drifles.crpg.object.Camera;
+
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.FloatBuffer;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -57,9 +62,36 @@ public final class ShaderProgram {
 
     public void use() {
         glUseProgram(program);
+        setUniformMatrix("projection", Camera.getInstance().getMatrix());
+    }
+
+    public void setUniform(String uniformName, float... values) {
+        int location = getUniformLocation(uniformName);
+
+        switch (values.length) {
+            case 1 -> glUniform1f(location, values[0]);
+            case 2 -> glUniform2fv(location, values);
+            case 3 -> glUniform3fv(location, values);
+            case 4 -> glUniform4fv(location, values);
+            default -> throw new RuntimeException("Too many values for uniform variable");
+        }
+    }
+
+    public void setUniformMatrix(String matrixName, Matrix4f matrix) {
+        int location = getUniformLocation(matrixName);
+
+        FloatBuffer matrixValues = BufferUtils.createFloatBuffer(16);
+        matrix.get(matrixValues);
+
+        glUniformMatrix4fv(location, false, matrixValues);
+        matrixValues.clear();
     }
 
     public int getAttribLocation(String paramName) {
         return glGetAttribLocation(program, paramName);
+    }
+
+    public int getUniformLocation(String uniformName) {
+        return glGetUniformLocation(program, uniformName);
     }
 }

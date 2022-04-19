@@ -2,23 +2,31 @@ package ru.drifles.crpg.object.world;
 
 import ru.drifles.crpg.object.Drawable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class World implements Drawable {
 
-    List<Tile> tiles = new ArrayList<>();
+    private final int worldSize = 11;
+    private final Tile[][] tiles = new Tile[worldSize][worldSize];
 
     public World() {
-        for (int i = 1; i < 12; i++) {
-            for (int j = 1; j < 12; j++) {
-                tiles.add(new Tile(j, i));
+        for (int i = 0; i < worldSize; i++) {
+            for (int j = 0; j < worldSize; j++) {
+                tiles[i][j] = new Tile(j + 1, i + 1);
             }
         }
     }
 
     @Override
     public void draw() {
-        tiles.forEach(Tile::draw);
+        for (Tile[] row : tiles)
+            for (Tile tile : row)
+                tile.draw();
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    public int getWorldSize() {
+        return worldSize;
     }
 }

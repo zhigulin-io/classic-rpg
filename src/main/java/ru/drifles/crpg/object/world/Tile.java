@@ -43,10 +43,16 @@ public class Tile extends GameObject {
 	);
 
 	private Color color;
+	private boolean passable;
 
-	public Tile(int x, int y) {
+	public Tile(int x, int y, boolean passable) {
 		super(x, y);
-		this.color = Color.WHITE;
+		if (passable) {
+			this.color = Color.RED;
+		} else {
+			this.color = Color.WHITE;
+		}
+		this.passable = passable;
 	}
 	
 	@Override
@@ -67,5 +73,13 @@ public class Tile extends GameObject {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public boolean isPassable() {
+		return passable;
+	}
+
+	public void setPassable(boolean passable) {
+		this.passable = passable;
 	}
 }

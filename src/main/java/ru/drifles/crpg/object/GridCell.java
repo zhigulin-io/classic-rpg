@@ -30,7 +30,7 @@ public class GridCell extends GameObject {
     );
 
     protected static final float tileSize = 16.0f;
-    protected static final Matrix4f modelMatrix = new Matrix4f().scale(tileSize);
+    protected static final Matrix4f modelMatrix = new Matrix4f().scale(tileSize).translate(0.5f, 0.5f, 0.0f);
 
     protected final Matrix4f viewMatrix = new Matrix4f().translate(
             position.getX() * tileSize,

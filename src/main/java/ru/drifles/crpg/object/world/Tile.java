@@ -34,7 +34,7 @@ public class Tile extends GameObject {
 	);
 
 	private static final float tileSize = 16.0f;
-	private static final Matrix4f modelMatrix = new Matrix4f().scale(tileSize);
+	private static final Matrix4f modelMatrix = new Matrix4f().scale(tileSize).translate(0.5f, 0.5f, 0.0f);
 
 	private final Matrix4f viewMatrix = new Matrix4f().translate(
 			position.getX() * tileSize,
@@ -42,8 +42,7 @@ public class Tile extends GameObject {
 			0.0f
 	);
 
-	private Color color;
-	private boolean passable;
+	private final Color color;
 
 	public Tile(int x, int y, boolean passable) {
 		super(x, y);
@@ -52,7 +51,6 @@ public class Tile extends GameObject {
 		} else {
 			this.color = Color.WHITE;
 		}
-		this.passable = passable;
 	}
 	
 	@Override
@@ -65,21 +63,5 @@ public class Tile extends GameObject {
 		vao.bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		vao.unbind();
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public boolean isPassable() {
-		return passable;
-	}
-
-	public void setPassable(boolean passable) {
-		this.passable = passable;
 	}
 }

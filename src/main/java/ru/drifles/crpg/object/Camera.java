@@ -16,8 +16,8 @@ public class Camera {
         this.matrix = new Matrix4f().ortho(
                 position.getX(),
                 position.getX() + screenWidth,
-                position.getY(),
                 position.getY() + screenHeight,
+                position.getY(),
                 -1.0f, 1.0f
         );
     }

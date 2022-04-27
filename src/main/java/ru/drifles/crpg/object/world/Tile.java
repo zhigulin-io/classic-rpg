@@ -43,10 +43,14 @@ public class Tile extends GameObject {
 	);
 
 	private final Color color;
+	private final boolean passable;
 
 	public Tile(int x, int y, boolean passable) {
 		super(x, y);
-		if (passable) {
+
+		this.passable = passable;
+
+		if (!passable) {
 			this.color = Color.RED;
 		} else {
 			this.color = Color.WHITE;
@@ -63,5 +67,9 @@ public class Tile extends GameObject {
 		vao.bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		vao.unbind();
+	}
+
+	public boolean isPassable() {
+		return passable;
 	}
 }

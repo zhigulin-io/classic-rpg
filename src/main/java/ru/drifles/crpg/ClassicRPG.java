@@ -46,7 +46,7 @@ public class ClassicRPG {
         if (window == 0) {
             LOG.severe("Could not create GLFW window");
             glfwTerminate();
-            return;
+            System.exit(-1);
         }
 
         glfwSetErrorCallback(ERROR_CALLBACK);

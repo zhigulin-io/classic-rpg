@@ -70,7 +70,7 @@ public class ClassicRPG {
     private void launch() {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-        var world = new World();
+        var world = new World("/level1.world");
         var grid = new Grid();
         var navMesh = new NavMesh(world);
 

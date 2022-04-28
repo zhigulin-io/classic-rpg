@@ -8,6 +8,7 @@ import ru.drifles.crpg.callback.KeyCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
 import ru.drifles.crpg.object.Grid;
 import ru.drifles.crpg.object.world.World;
+import ru.drifles.crpg.object.world.navigation.NavMesh;
 
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL32.GL_PROGRAM_POINT_SIZE;
 
 public class ClassicRPG {
     private static final Logger LOG = Logger.getLogger(ClassicRPG.class.getName());
@@ -61,6 +63,8 @@ public class ClassicRPG {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_PROGRAM_POINT_SIZE);
     }
 
     private void launch() {
@@ -68,12 +72,14 @@ public class ClassicRPG {
 
         var world = new World();
         var grid = new Grid();
+        var navMesh = new NavMesh(world);
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT);
 
             world.draw();
             grid.draw();
+            navMesh.draw();
 
             glfwSwapBuffers(window);
             glfwPollEvents();

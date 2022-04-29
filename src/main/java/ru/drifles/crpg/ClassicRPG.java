@@ -74,6 +74,9 @@ public class ClassicRPG {
         var grid = new Grid();
         var navMesh = new NavMesh(world);
 
+        var distances = navMesh.augmentedBreadthFirstSearch(world.getTiles()[1][1]);
+        distances.forEach((tile, v) -> System.out.println(tile + " -> " + v));
+
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT);
 

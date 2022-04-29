@@ -42,7 +42,10 @@ public class NavPath implements Drawable {
     private final Matrix4f viewMatrix;
     private final Matrix4f modelMatrix;
 
+    private final NavNode to;
+
     public NavPath(NavNode from, NavNode to) {
+        this.to = to;
 
         float angle = 0;
 
@@ -77,5 +80,9 @@ public class NavPath implements Drawable {
         vao.bind();
         glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);
         vao.unbind();
+    }
+
+    public NavNode getTo() {
+        return to;
     }
 }

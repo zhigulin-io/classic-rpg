@@ -4,6 +4,8 @@ import org.joml.Matrix4f;
 import ru.drifles.crpg.common.*;
 import ru.drifles.crpg.object.GameObject;
 
+import java.util.Objects;
+
 import static org.lwjgl.opengl.GL20.*;
 
 public class Tile extends GameObject {
@@ -71,5 +73,27 @@ public class Tile extends GameObject {
 
 	public boolean isPassable() {
 		return passable;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Tile tile = (Tile) o;
+		return passable == tile.passable && color == tile.color && position.equals(tile.getPosition());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(color, passable, position);
+	}
+
+	@Override
+	public String toString() {
+		return "Tile{" +
+				"position=" + position +
+				", color=" + color +
+				", passable=" + passable +
+				'}';
 	}
 }

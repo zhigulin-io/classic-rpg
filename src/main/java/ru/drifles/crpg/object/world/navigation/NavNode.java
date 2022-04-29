@@ -8,6 +8,8 @@ import ru.drifles.crpg.common.VertexAttribPointer;
 import ru.drifles.crpg.object.Drawable;
 import ru.drifles.crpg.object.world.Tile;
 
+import java.util.Objects;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class NavNode implements Drawable {
@@ -64,5 +66,25 @@ public class NavNode implements Drawable {
 
     public Tile getTile() {
         return tile;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NavNode navNode = (NavNode) o;
+        return tile.equals(navNode.tile);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tile);
+    }
+
+    @Override
+    public String toString() {
+        return "NavNode{" +
+                "tile=" + tile +
+                '}';
     }
 }

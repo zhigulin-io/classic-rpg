@@ -25,9 +25,6 @@ public class NavMesh implements Drawable {
                 });
     }
 
-    /*
-     * Обычный обход графа в ширину
-     */
     public Set<Tile> breadthFirstSearch(Tile startTile) {
         var queue = new ArrayDeque<NavNode>();
         var visitedSet = new HashSet<Tile>();
@@ -53,9 +50,6 @@ public class NavMesh implements Drawable {
         return visitedSet;
     }
 
-    /*
-     * Обход в ширину для поиска кратчайших путей
-     */
     public Map<Tile, Double> augmentedBreadthFirstSearch(Tile startTile) {
         var queue = new ArrayDeque<NavNode>();
         var visitedSet = new HashSet<Tile>();

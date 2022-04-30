@@ -2,7 +2,6 @@ package ru.drifles.crpg.common;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
-import ru.drifles.crpg.object.Camera;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -62,7 +61,7 @@ public final class ShaderProgram {
 
     public void use() {
         glUseProgram(program);
-        setUniformMatrix("projection", Camera.getInstance().getMatrix());
+        setUniformMatrix("projection", Camera.PROJECTION);
     }
 
     public void setUniform(String uniformName, float... values) {

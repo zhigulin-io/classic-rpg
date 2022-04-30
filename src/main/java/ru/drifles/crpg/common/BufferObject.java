@@ -17,22 +17,7 @@ public final class BufferObject {
     	loadData(data, drawType);
     }
     
-    public BufferObject(BufferType bufferType, double[] data, DrawType drawType) {
-    	this(bufferType);
-    	loadData(data, drawType);
-    }
-
-    public BufferObject(BufferType bufferType, short[] data, DrawType drawType) {
-    	this(bufferType);
-    	loadData(data, drawType);
-    }
-    
     public BufferObject(BufferType bufferType, int[] data, DrawType drawType) {
-    	this(bufferType);
-    	loadData(data, drawType);
-    }
-    
-    public BufferObject(BufferType bufferType, long[] data, DrawType drawType) {
     	this(bufferType);
     	loadData(data, drawType);
     }
@@ -44,24 +29,6 @@ public final class BufferObject {
     }
 
     public void loadData(int[] data, DrawType drawType) {
-        glBindBuffer(bufferType.value, bufferObject);
-        glBufferData(bufferType.value, data, drawType.value);
-        glBindBuffer(bufferType.value, 0);
-    }
-
-    public void loadData(long[] data, DrawType drawType) {
-        glBindBuffer(bufferType.value, bufferObject);
-        glBufferData(bufferType.value, data, drawType.value);
-        glBindBuffer(bufferType.value, 0);
-    }
-
-    public void loadData(double[] data, DrawType drawType) {
-        glBindBuffer(bufferType.value, bufferObject);
-        glBufferData(bufferType.value, data, drawType.value);
-        glBindBuffer(bufferType.value, 0);
-    }
-
-    public void loadData(short[] data, DrawType drawType) {
         glBindBuffer(bufferType.value, bufferObject);
         glBufferData(bufferType.value, data, drawType.value);
         glBindBuffer(bufferType.value, 0);
@@ -86,7 +53,7 @@ public final class BufferObject {
     }
 
     public enum DrawType {
-        STATIC(GL_STATIC_DRAW), DYNAMIC(GL_DYNAMIC_DRAW), STREAM(GL_STREAM_DRAW);
+        STATIC(GL_STATIC_DRAW);
 
         private final int value;
 

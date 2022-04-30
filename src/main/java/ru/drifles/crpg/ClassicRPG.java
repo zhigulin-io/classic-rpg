@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import ru.drifles.crpg.callback.ErrorCallback;
 import ru.drifles.crpg.callback.KeyCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
-import ru.drifles.crpg.object.Grid;
+import ru.drifles.crpg.common.Properties;
 import ru.drifles.crpg.object.world.World;
 import ru.drifles.crpg.object.world.navigation.NavMesh;
 
@@ -20,9 +20,7 @@ import static org.lwjgl.opengl.GL32.GL_PROGRAM_POINT_SIZE;
 
 public class ClassicRPG {
     private static final Logger LOG = Logger.getLogger(ClassicRPG.class.getName());
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 600;
-    private static final String TITLE = "Classic RPG";
+
     private static final GLFWErrorCallback ERROR_CALLBACK = new ErrorCallback();
     private static final GLFWWindowCloseCallback WINDOW_CLOSE_CALLBACK = new WindowCloseCallback();
     private static final GLFWKeyCallback KEY_CALLBACK = new KeyCallback();
@@ -44,7 +42,7 @@ public class ClassicRPG {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-        window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, 0, 0);
+        window = glfwCreateWindow(Properties.windowWidth, Properties.windowHeight, Properties.windowTitle, 0, 0);
         if (window == 0) {
             LOG.severe("Could not create GLFW window");
             glfwTerminate();
@@ -71,17 +69,18 @@ public class ClassicRPG {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
         var world = new World("/level1.world");
-        var grid = new Grid();
         var navMesh = new NavMesh(world);
 
+        var visitedTiles = navMesh.breadthFirstSearch(world.getTiles()[1][1]);
+        System.out.println("Visited: " + visitedTiles.size());
+
         var distances = navMesh.augmentedBreadthFirstSearch(world.getTiles()[1][1]);
-        distances.forEach((tile, v) -> System.out.println(tile + " -> " + v));
+        System.out.println("Calculated distances: " + distances.size());
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT);
 
             world.draw();
-            grid.draw();
             navMesh.draw();
 
             glfwSwapBuffers(window);

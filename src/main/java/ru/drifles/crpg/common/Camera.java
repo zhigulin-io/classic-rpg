@@ -13,8 +13,8 @@ public class Camera {
     public static final Matrix4f PROJECTION = new Matrix4f().ortho(
             LEFT_POSITION,
             RIGHT_POSITION,
-            TOP_POSITION,
             BOTTOM_POSITION,
+            TOP_POSITION,
             NEAR_POSITION,
             FAR_POSITION
     );

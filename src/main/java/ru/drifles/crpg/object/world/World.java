@@ -1,6 +1,8 @@
 package ru.drifles.crpg.object.world;
 
+import ru.drifles.crpg.common.Position;
 import ru.drifles.crpg.object.Drawable;
+import ru.drifles.crpg.object.world.navigation.NavMesh;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +17,9 @@ public class World implements Drawable {
 
     private final int worldSize = 10;
     private final Tile[][] tiles = new Tile[worldSize][worldSize];
+
+    private final NavMesh navMesh;
+    private final Walker walker;
 
     public World(String worldName) {
 
@@ -33,6 +38,9 @@ public class World implements Drawable {
         } catch (URISyntaxException | IOException e) {
             throw new RuntimeException(e);
         }
+
+        this.navMesh = new NavMesh(this);
+        this.walker = new Walker(new Position(1, 1));
     }
 
     @Override
@@ -40,6 +48,9 @@ public class World implements Drawable {
         for (Tile[] row : tiles)
             for (Tile tile : row)
                 tile.draw();
+
+        navMesh.draw();
+        walker.draw();
     }
 
     public Tile[][] getTiles() {
@@ -65,5 +76,13 @@ public class World implements Drawable {
             result.add(tiles[i - 1][j]);
 
         return result;
+    }
+
+    public NavMesh getNavMesh() {
+        return navMesh;
+    }
+
+    public Walker getWalker() {
+        return walker;
     }
 }

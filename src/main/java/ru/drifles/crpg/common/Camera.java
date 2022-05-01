@@ -10,6 +10,9 @@ public class Camera {
     private static final float NEAR_POSITION = -1;
     private static final float FAR_POSITION = 1;
 
+    public static final float WIDTH = RIGHT_POSITION - LEFT_POSITION;
+    public static final float HEIGHT = BOTTOM_POSITION - TOP_POSITION;
+
     public static final Matrix4f PROJECTION = new Matrix4f().ortho(
             LEFT_POSITION,
             RIGHT_POSITION,

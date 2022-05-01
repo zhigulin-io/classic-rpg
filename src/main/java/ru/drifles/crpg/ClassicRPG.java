@@ -1,14 +1,12 @@
 package ru.drifles.crpg;
 
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWWindowCloseCallback;
+import org.lwjgl.glfw.Callbacks;
 import ru.drifles.crpg.callback.ErrorCallback;
 import ru.drifles.crpg.callback.KeyCallback;
+import ru.drifles.crpg.callback.MouseButtonCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
 import ru.drifles.crpg.common.Properties;
 import ru.drifles.crpg.object.world.World;
-import ru.drifles.crpg.object.world.navigation.NavMesh;
 
 import java.util.logging.Logger;
 
@@ -21,67 +19,42 @@ import static org.lwjgl.opengl.GL32.GL_PROGRAM_POINT_SIZE;
 public class ClassicRPG {
     private static final Logger LOG = Logger.getLogger(ClassicRPG.class.getName());
 
-    private static final GLFWErrorCallback ERROR_CALLBACK = new ErrorCallback();
-    private static final GLFWWindowCloseCallback WINDOW_CLOSE_CALLBACK = new WindowCloseCallback();
-    private static final GLFWKeyCallback KEY_CALLBACK = new KeyCallback();
-
-    private long window;
+    private static final ClassicRPG instance = new ClassicRPG();
 
     public static void main(String[] args) {
-        var game = new ClassicRPG();
-        game.launch();
+        instance.launch();
+    }
+
+    public static ClassicRPG getInstance() {
+        return instance;
+    }
+
+    private final World world;
+    private final long window;
+
+    public World getWorld() {
+        return world;
     }
 
     private ClassicRPG() {
-        if (!glfwInit()) {
-            LOG.severe("Could not initialize GLFW");
-            return;
-        }
+        this.window = createWindow();
+        configOpenGLFeatures();
 
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-        window = glfwCreateWindow(Properties.windowWidth, Properties.windowHeight, Properties.windowTitle, 0, 0);
-        if (window == 0) {
-            LOG.severe("Could not create GLFW window");
-            glfwTerminate();
-            System.exit(-1);
-        }
-
-        glfwSetErrorCallback(ERROR_CALLBACK);
-        glfwSetWindowCloseCallback(window, WINDOW_CLOSE_CALLBACK);
-        glfwSetKeyCallback(window, KEY_CALLBACK);
-
-        glfwMakeContextCurrent(window);
-
-        glfwSwapInterval(1);
-
-        createCapabilities();
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        glEnable(GL_PROGRAM_POINT_SIZE);
+        this.world = new World("/level1.world");
+        registerCallbacks();
     }
 
     private void launch() {
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-
-        var world = new World("/level1.world");
-        var navMesh = new NavMesh(world);
-
-        var visitedTiles = navMesh.breadthFirstSearch(world.getTiles()[1][1]);
+        var visitedTiles = world.getNavMesh().breadthFirstSearch(world.getTiles()[1][1]);
         System.out.println("Visited: " + visitedTiles.size());
 
-        var distances = navMesh.augmentedBreadthFirstSearch(world.getTiles()[1][1]);
+        var distances = world.getNavMesh().augmentedBreadthFirstSearch(world.getTiles()[1][1]);
         System.out.println("Calculated distances: " + distances.size());
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT);
 
             world.draw();
-            navMesh.draw();
 
             glfwSwapBuffers(window);
             glfwPollEvents();
@@ -90,5 +63,47 @@ public class ClassicRPG {
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
         glfwTerminate();
+    }
+
+    private long createWindow() {
+        if (!glfwInit()) {
+            LOG.severe("Could not initialize GLFW");
+            System.exit(-1);
+        }
+
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
+        long window = glfwCreateWindow(Properties.windowWidth, Properties.windowHeight, Properties.windowTitle, 0, 0);
+        if (window == 0) {
+            LOG.severe("Could not create GLFW window");
+            glfwTerminate();
+            System.exit(-1);
+        }
+
+        glfwMakeContextCurrent(window);
+
+        if (Properties.vsync)
+            glfwSwapInterval(1);
+
+        return window;
+    }
+
+    private void configOpenGLFeatures() {
+        createCapabilities();
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_PROGRAM_POINT_SIZE);
+
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    }
+
+    private void registerCallbacks() {
+        glfwSetErrorCallback(new ErrorCallback());
+        glfwSetWindowCloseCallback(window, new WindowCloseCallback());
+        glfwSetKeyCallback(window, new KeyCallback());
+        glfwSetMouseButtonCallback(window, new MouseButtonCallback());
     }
 }

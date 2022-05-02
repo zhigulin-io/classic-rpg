@@ -53,8 +53,8 @@ public class NavPathRenderer implements Renderer {
 
         this.viewMatrix = new Matrix4f()
                 .translate(
-                        navPath.getFrom().getTile().getPosition().getX() * tileSize,
-                        navPath.getFrom().getTile().getPosition().getY() * tileSize,
+                        (float) (navPath.getFrom().getTile().getPosition().getX() * tileSize),
+                        (float) (navPath.getFrom().getTile().getPosition().getY() * tileSize),
                         0.0f
                 );
     }

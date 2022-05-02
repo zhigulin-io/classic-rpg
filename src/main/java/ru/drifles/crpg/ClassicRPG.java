@@ -1,6 +1,5 @@
 package ru.drifles.crpg;
 
-import org.lwjgl.glfw.Callbacks;
 import ru.drifles.crpg.callback.ErrorCallback;
 import ru.drifles.crpg.callback.KeyCallback;
 import ru.drifles.crpg.callback.MouseButtonCallback;
@@ -45,12 +44,6 @@ public class ClassicRPG {
     }
 
     private void launch() {
-        var visitedTiles = world.getNavMesh().breadthFirstSearch(world.getTiles()[1][1]);
-        System.out.println("Visited: " + visitedTiles.size());
-
-        var distances = world.getNavMesh().augmentedBreadthFirstSearch(world.getTiles()[1][1]);
-        System.out.println("Calculated distances: " + distances.size());
-
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT);
 

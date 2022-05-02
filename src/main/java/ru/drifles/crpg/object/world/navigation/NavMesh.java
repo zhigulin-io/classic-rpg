@@ -25,58 +25,43 @@ public class NavMesh implements Drawable {
                 });
     }
 
-    public Set<Tile> breadthFirstSearch(Tile startTile) {
+    public Stack<Tile> routeBFS(Tile startTile, Tile finishTile) {
         var queue = new ArrayDeque<NavNode>();
         var visitedSet = new HashSet<Tile>();
         var startNode = getNavNodeByTile(startTile);
+        var wayPoints = new Stack<Tile>();
+        var ways = new HashMap<Tile, Tile>();
 
         if (startNode == null)
-            return visitedSet;
+            return wayPoints;
 
         queue.add(startNode);
         visitedSet.add(startTile);
 
         while (!queue.isEmpty()) {
             var currentNode = queue.removeFirst();
-
-            for (var path : pathMap.get(currentNode)) {
-                if (!visitedSet.contains(path.getTo().getTile())) {
-                    visitedSet.add(path.getTo().getTile());
-                    queue.add(path.getTo());
-                }
-            }
-        }
-
-        return visitedSet;
-    }
-
-    public Map<Tile, Double> augmentedBreadthFirstSearch(Tile startTile) {
-        var queue = new ArrayDeque<NavNode>();
-        var visitedSet = new HashSet<Tile>();
-        var distances = new HashMap<Tile, Double>();
-        var startNode = getNavNodeByTile(startTile);
-
-        if (startNode == null)
-            return distances;
-
-        distances.put(startTile, 0.0);
-        queue.add(startNode);
-        visitedSet.add(startTile);
-
-        while (!queue.isEmpty()) {
-            var currentNode = queue.removeFirst();
+            if (currentNode.getTile().equals(finishTile))
+                break;
 
             for (var path : pathMap.get(currentNode)) {
                 var target = path.getTo().getTile();
                 if (!visitedSet.contains(target)) {
                     visitedSet.add(target);
-                    distances.put(target, distances.get(currentNode.getTile()) + 1.0);
+                    ways.put(target, currentNode.getTile());
                     queue.add(path.getTo());
                 }
             }
         }
 
-        return distances;
+        wayPoints.push(finishTile);
+        Tile tile = ways.get(finishTile);
+        while (tile != null) {
+            if (tile != startTile)
+                wayPoints.push(tile);
+            tile = ways.get(tile);
+        }
+
+        return wayPoints;
     }
 
     @Override

@@ -49,8 +49,8 @@ public class TileRenderer implements Renderer {
     public TileRenderer(Tile tile) {
         this.viewMatrix  = new Matrix4f()
                 .translate(
-                        tile.getPosition().getX() * Properties.tileSize,
-                        tile.getPosition().getY() * Properties.tileSize,
+                        (float) (tile.getPosition().getX() * Properties.tileSize),
+                        (float) (tile.getPosition().getY() * Properties.tileSize),
                         0.0f
                 );
         this.color = tile.isPassable() ? Color.WHITE : Color.RED;

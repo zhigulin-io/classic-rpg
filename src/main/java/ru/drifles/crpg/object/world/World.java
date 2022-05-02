@@ -64,16 +64,16 @@ public class World implements Drawable {
         var j = tile.getPosition().getX();
 
         if (j + 1 < worldSize)
-            result.add(tiles[i][j + 1]);
+            result.add(tiles[(int) i][(int) (j + 1)]);
 
         if (j - 1 >= 0)
-            result.add(tiles[i][j - 1]);
+            result.add(tiles[(int) i][(int) (j - 1)]);
 
         if (i + 1 < worldSize)
-            result.add(tiles[i + 1][j]);
+            result.add(tiles[(int) (i + 1)][(int) j]);
 
         if (i - 1 >= 0)
-            result.add(tiles[i - 1][j]);
+            result.add(tiles[(int) (i - 1)][(int) j]);
 
         return result;
     }

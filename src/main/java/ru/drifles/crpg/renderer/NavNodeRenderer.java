@@ -32,8 +32,8 @@ public class NavNodeRenderer implements Renderer {
 
     public NavNodeRenderer(NavNode navNode) {
         this.VIEW_MATRIX = new Matrix4f().translate(
-                navNode.getTile().getPosition().getX() * Properties.tileSize,
-                navNode.getTile().getPosition().getY() * Properties.tileSize,
+                (float) (navNode.getTile().getPosition().getX() * Properties.tileSize),
+                (float) (navNode.getTile().getPosition().getY() * Properties.tileSize),
                 0.0f
         );
     }

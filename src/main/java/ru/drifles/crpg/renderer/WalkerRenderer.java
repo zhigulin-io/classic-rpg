@@ -49,8 +49,8 @@ public class WalkerRenderer implements Renderer {
         this.walker = walker;
         this.viewMatrix = new Matrix4f()
                 .translate(
-                        walker.getPosition().getX() * Properties.tileSize,
-                        walker.getPosition().getY() * Properties.tileSize,
+                        (float) (walker.getPosition().getX() * Properties.tileSize),
+                        (float) (walker.getPosition().getY() * Properties.tileSize),
                         0.0f
                 );
     }
@@ -58,8 +58,8 @@ public class WalkerRenderer implements Renderer {
     @Override
     public void render() {
         this.viewMatrix.setTranslation(
-                walker.getPosition().getX() * Properties.tileSize,
-                walker.getPosition().getY() * Properties.tileSize,
+                (float) (walker.getPosition().getX() * Properties.tileSize),
+                (float) (walker.getPosition().getY() * Properties.tileSize),
                 0.0f
         );
 

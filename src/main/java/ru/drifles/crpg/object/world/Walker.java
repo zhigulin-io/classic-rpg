@@ -23,6 +23,10 @@ public class Walker implements Drawable {
         return position;
     }
 
+    public void setPosition(double x, double y) {
+        this.route = null;
+        this.position.setXY(x, y);
+    }
 
     public void setTarget(Position target) {
         var start = ClassicRPG.getInstance().getWorld().getTiles()[(int) position.getY()][(int) position.getX()];

@@ -37,7 +37,7 @@ public class MouseButtonCallback extends GLFWMouseButtonCallback {
             if (tiles[tileY][tileX].isPassable()) {
 
                 switch (button) {
-                    case GLFW_MOUSE_BUTTON_LEFT -> walker.getPosition().setXY(tileX, tileY);
+                    case GLFW_MOUSE_BUTTON_LEFT -> walker.setPosition(tileX, tileY);
                     case GLFW_MOUSE_BUTTON_RIGHT -> walker.setTarget(new Position(tileX, tileY));
                 }
 

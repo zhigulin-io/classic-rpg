@@ -1,7 +1,8 @@
-package ru.drifles.crpg.common;
+package ru.drifles.crpg.accessory;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
+import ru.drifles.crpg.common.Camera;
 
 import java.io.*;
 import java.net.URISyntaxException;

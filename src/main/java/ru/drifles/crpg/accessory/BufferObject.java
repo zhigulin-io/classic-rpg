@@ -1,4 +1,4 @@
-package ru.drifles.crpg.common;
+package ru.drifles.crpg.accessory;
 
 import static org.lwjgl.opengl.GL15.*;
 

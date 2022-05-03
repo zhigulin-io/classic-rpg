@@ -1,4 +1,4 @@
-package ru.drifles.crpg.renderer;
+package ru.drifles.crpg.common;
 
 public interface Renderer {
     void render();

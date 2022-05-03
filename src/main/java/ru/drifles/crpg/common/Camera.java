@@ -3,10 +3,12 @@ package ru.drifles.crpg.common;
 import org.joml.Matrix4f;
 
 public class Camera {
-    private static final float LEFT_POSITION = 0;
-    private static final float TOP_POSITION = 0;
-    private static final float RIGHT_POSITION = 160;
-    private static final float BOTTOM_POSITION = 160;
+    private static final int TILES_NUMBER = 16;
+    private static final float CAMERA_OFFSET = -0.5f;
+    private static final float LEFT_POSITION = CAMERA_OFFSET;
+    private static final float TOP_POSITION = CAMERA_OFFSET;
+    private static final float RIGHT_POSITION = TILES_NUMBER + CAMERA_OFFSET;
+    private static final float BOTTOM_POSITION = TILES_NUMBER + CAMERA_OFFSET;
     private static final float NEAR_POSITION = -1;
     private static final float FAR_POSITION = 1;
 

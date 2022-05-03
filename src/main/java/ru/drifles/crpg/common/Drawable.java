@@ -1,4 +1,4 @@
-package ru.drifles.crpg.object;
+package ru.drifles.crpg.common;
 
 public interface Drawable {
     void draw();

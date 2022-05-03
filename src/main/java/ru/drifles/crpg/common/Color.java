@@ -1,10 +1,11 @@
 package ru.drifles.crpg.common;
 
 public enum Color {
-    RED(1.0f, 0.0f, 0.0f),
-    WHITE(1.0f, 1.0f, 1.0f),
-    BLACK(0.0f, 0.0f, 0.0f),
-    GREEN(0.0f, 1.0f, 0.0f);
+    BLUE(0.3f, 0.3f, 7.0f),
+    RED(7.0f, 0.3f, 0.3f),
+    WHITE(7.0f, 7.0f, 7.0f),
+    BLACK(0.3f, 0.3f, 0.3f),
+    GREEN(0.3f, 7.0f, 0.3f);
 
     private final float r;
     private final float g;

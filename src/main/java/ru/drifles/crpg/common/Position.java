@@ -3,41 +3,31 @@ package ru.drifles.crpg.common;
 import java.util.Objects;
 
 public final class Position {
-    private double x;
-    private double y;
+    private float x;
+    private float y;
 
-    public Position() {
-        this.x = 0;
-        this.y = 0;
-    }
-
-    public Position(double x, double y) {
+    public Position(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    public Position(double xy) {
-        this.x = xy;
-        this.y = xy;
-    }
-
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public void setXY(double x, double y) {
+    public void setXY(float x, float y) {
         this.x = x;
         this.y = y;
     }

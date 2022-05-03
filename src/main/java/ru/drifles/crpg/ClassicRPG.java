@@ -4,8 +4,8 @@ import ru.drifles.crpg.callback.ErrorCallback;
 import ru.drifles.crpg.callback.KeyCallback;
 import ru.drifles.crpg.callback.MouseButtonCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
-import ru.drifles.crpg.common.Properties;
-import ru.drifles.crpg.object.world.World;
+import ru.drifles.crpg.config.Properties;
+import ru.drifles.crpg.container.World;
 
 import java.util.logging.Logger;
 
@@ -28,8 +28,8 @@ public class ClassicRPG {
         return instance;
     }
 
-    private final World world;
     private final long window;
+    private final World world;
 
     public World getWorld() {
         return world;
@@ -39,7 +39,7 @@ public class ClassicRPG {
         this.window = createWindow();
         configOpenGLFeatures();
 
-        this.world = new World("/level1.world");
+        this.world = new World();
         registerCallbacks();
     }
 
@@ -67,6 +67,7 @@ public class ClassicRPG {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         long window = glfwCreateWindow(Properties.windowWidth, Properties.windowHeight, Properties.windowTitle, 0, 0);
         if (window == 0) {
@@ -90,7 +91,7 @@ public class ClassicRPG {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_PROGRAM_POINT_SIZE);
 
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     }
 
     private void registerCallbacks() {

@@ -1,8 +1,12 @@
-package ru.drifles.crpg.renderer;
+package ru.drifles.crpg.gameobject.walker;
 
 import org.joml.Matrix4f;
-import ru.drifles.crpg.common.*;
-import ru.drifles.crpg.object.world.Walker;
+import ru.drifles.crpg.accessory.BufferObject;
+import ru.drifles.crpg.accessory.ShaderProgram;
+import ru.drifles.crpg.accessory.VertexArrayObject;
+import ru.drifles.crpg.accessory.VertexAttribPointer;
+import ru.drifles.crpg.common.Color;
+import ru.drifles.crpg.common.Renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -37,9 +41,7 @@ public class WalkerRenderer implements Renderer {
             }
     );
 
-    private static final Matrix4f MODEL_MATRIX = new Matrix4f()
-            .scale(Properties.tileSize)
-            .translate(0.5f, 0.5f, 0.0f);
+    private static final Matrix4f MODEL_MATRIX = new Matrix4f().identity();
 
     private final Matrix4f viewMatrix;
     private final Color color = Color.GREEN;
@@ -47,21 +49,12 @@ public class WalkerRenderer implements Renderer {
 
     public WalkerRenderer(Walker walker) {
         this.walker = walker;
-        this.viewMatrix = new Matrix4f()
-                .translate(
-                        (float) (walker.getPosition().getX() * Properties.tileSize),
-                        (float) (walker.getPosition().getY() * Properties.tileSize),
-                        0.0f
-                );
+        this.viewMatrix = new Matrix4f().translate(walker.getPosition().getX(), walker.getPosition().getY(), 0.0f);
     }
 
     @Override
     public void render() {
-        this.viewMatrix.setTranslation(
-                (float) (walker.getPosition().getX() * Properties.tileSize),
-                (float) (walker.getPosition().getY() * Properties.tileSize),
-                0.0f
-        );
+        this.viewMatrix.setTranslation(walker.getPosition().getX(), walker.getPosition().getY(), 0.0f);
 
         SHADER_PROGRAM.use();
 

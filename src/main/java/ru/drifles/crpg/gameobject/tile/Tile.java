@@ -14,6 +14,8 @@ public final class Tile implements Drawable {
     private final List<Way> ways;
     private final Renderer renderer;
 
+    private Way sourceWay;
+
     public Tile(Position position, boolean passable) {
         this.position = position;
         this.passable = passable;
@@ -40,6 +42,14 @@ public final class Tile implements Drawable {
 
     public List<Way> getWays() {
         return ways;
+    }
+
+    public Way getSourceWay() {
+        return sourceWay;
+    }
+
+    public void setSourceWay(Way sourceWay) {
+        this.sourceWay = sourceWay;
     }
 
     @Override

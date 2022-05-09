@@ -8,13 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class Tile implements Drawable {
+public final class Tile implements Drawable, Comparable<Tile> {
     private final Position position;
     private final boolean passable;
     private final List<Way> ways;
     private final Renderer renderer;
 
     private Way sourceWay;
+    private double h;
+    private double g;
+    private double f;
 
     public Tile(Position position, boolean passable) {
         this.position = position;
@@ -52,6 +55,26 @@ public final class Tile implements Drawable {
         this.sourceWay = sourceWay;
     }
 
+    public double getH() {
+        return h;
+    }
+
+    public void setH(double h) {
+        this.h = h;
+    }
+
+    public double getG() {
+        return g;
+    }
+
+    public void setG(double g) {
+        this.g = g;
+    }
+
+    public void setF(double f) {
+        this.f = f;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,5 +86,10 @@ public final class Tile implements Drawable {
     @Override
     public int hashCode() {
         return Objects.hash(position, passable);
+    }
+
+    @Override
+    public int compareTo(Tile o) {
+        return (int) (this.f - o.f);
     }
 }

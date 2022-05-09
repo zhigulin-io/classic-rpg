@@ -1,23 +1,28 @@
 package ru.drifles.crpg.gameobject.walker;
 
-import ru.drifles.crpg.*;
+import ru.drifles.crpg.ClassicRPG;
 import ru.drifles.crpg.common.Drawable;
 import ru.drifles.crpg.common.Position;
 import ru.drifles.crpg.common.Renderer;
 import ru.drifles.crpg.gameobject.tile.Tile;
 import ru.drifles.crpg.gameobject.tile.Way;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Stack;
 
 public class Walker implements Drawable {
     private final Position position;
     private final Renderer renderer;
     private Stack<Way> route;
+    private RoutingType routingType;
 
     public Walker(Position position) {
         this.position = position;
         this.renderer = new WalkerRenderer(this);
         this.route = null;
+        this.routingType = RoutingType.A_STAR;
     }
 
     public Position getPosition() {
@@ -32,7 +37,11 @@ public class Walker implements Drawable {
     public void setTarget(Tile target) {
         if (route == null) {
             var start = ClassicRPG.getInstance().getWorld().getLand().getGraph().get(position);
-            this.route = routeBFS(start, target);
+
+            this.route = switch (routingType) {
+                case BFS -> routeBFS(start, target);
+                case A_STAR -> routeAStar(start, target);
+            };
         }
     }
 
@@ -44,10 +53,55 @@ public class Walker implements Drawable {
         renderer.render();
     }
 
+    private Stack<Way> routeAStar(Tile startTile, Tile finishTile) {
+        var openQueue = new PriorityQueue<Tile>();
+        var closeQueue = new PriorityQueue<Tile>();
+
+        startTile.setSourceWay(null);
+        finishTile.setSourceWay(null);
+
+        startTile.setG(0);
+        startTile.setH(heuristicDistance(startTile, finishTile));
+        startTile.setF(startTile.getG() + startTile.getH());
+        openQueue.add(startTile);
+
+        while (!openQueue.isEmpty()) {
+            var tile = openQueue.poll();
+            closeQueue.add(tile);
+
+            if (tile.equals(finishTile))
+                break;
+
+            for (var way : tile.getWays()) {
+                var target = way.to();
+
+                if (!target.isPassable() || closeQueue.contains(target))
+                    continue;
+
+                var newG = tile.getG() + 1.0;
+                if (!openQueue.contains(target) || newG < target.getG()) {
+                    target.setSourceWay(way);
+                    target.setG(newG);
+                    target.setH(heuristicDistance(target, finishTile));
+                    target.setF(target.getG() + target.getH());
+                    if (!openQueue.contains(target))
+                        openQueue.add(target);
+                }
+            }
+        }
+
+        return buildRoute(finishTile);
+    }
+
+    private double heuristicDistance(Tile from, Tile to) {
+        var a = from.getPosition().getX() - to.getPosition().getX();
+        var b = from.getPosition().getY() - to.getPosition().getY();
+        return Math.sqrt(a * a + b * b);
+    }
+
     private Stack<Way> routeBFS(Tile startTile, Tile finishTile) {
         var queue = new LinkedList<Tile>();
         var visitedSet = new HashSet<Tile>();
-        var route = new Stack<Way>();
 
         startTile.setSourceWay(null);
         finishTile.setSourceWay(null);
@@ -64,12 +118,18 @@ public class Walker implements Drawable {
 
             for (var way : currentTile.getWays()) {
                 var target = way.to();
-                if (target.isPassable() && !visitedSet.contains(target)) {
+                if (target.isPassable() && !visitedSet.contains(target) && !queue.contains(target)) {
                     target.setSourceWay(way);
                     queue.add(target);
                 }
             }
         }
+
+        return buildRoute(finishTile);
+    }
+
+    private Stack<Way> buildRoute(Tile finishTile) {
+        var route = new Stack<Way>();
 
         var source = finishTile.getSourceWay();
         if (source == null)
@@ -103,5 +163,13 @@ public class Walker implements Drawable {
             else if (dY > 0)
                 position.setY(position.getY() + moveSpeed);
         }
+    }
+
+    public void setRoutingType(RoutingType routingType) {
+        this.routingType = routingType;
+    }
+
+    public enum RoutingType {
+        BFS, A_STAR
     }
 }

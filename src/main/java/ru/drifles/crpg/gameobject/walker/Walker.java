@@ -4,6 +4,7 @@ import ru.drifles.crpg.ClassicRPG;
 import ru.drifles.crpg.common.Drawable;
 import ru.drifles.crpg.common.Position;
 import ru.drifles.crpg.common.Renderer;
+import ru.drifles.crpg.common.Time;
 import ru.drifles.crpg.gameobject.tile.Tile;
 import ru.drifles.crpg.gameobject.tile.Way;
 
@@ -147,7 +148,7 @@ public class Walker implements Drawable {
         float dX = route.peek().to().getPosition().getX() - position.getX();
         float dY = route.peek().to().getPosition().getY() - position.getY();
 
-        float moveSpeed = 0.1f;
+        float moveSpeed = (float) (5.0f * Time.delta);
         if (Math.abs(dX) < moveSpeed && Math.abs(dY) < moveSpeed) {
             var tile = route.pop();
             if (route.size() == 0)

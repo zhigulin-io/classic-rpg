@@ -4,6 +4,7 @@ import ru.drifles.crpg.callback.ErrorCallback;
 import ru.drifles.crpg.callback.KeyCallback;
 import ru.drifles.crpg.callback.MouseButtonCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
+import ru.drifles.crpg.common.Time;
 import ru.drifles.crpg.config.Properties;
 import ru.drifles.crpg.container.World;
 
@@ -45,11 +46,14 @@ public class ClassicRPG {
 
     private void launch() {
         while (!glfwWindowShouldClose(window)) {
+            var beginTime = glfwGetTime();
             glClear(GL_COLOR_BUFFER_BIT);
 
             world.draw();
 
             glfwSwapBuffers(window);
+            var endTime = glfwGetTime();
+            Time.delta = endTime - beginTime;
             glfwPollEvents();
         }
 

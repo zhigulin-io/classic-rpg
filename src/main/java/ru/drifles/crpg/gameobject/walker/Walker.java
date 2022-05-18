@@ -42,6 +42,8 @@ public class Walker implements Drawable {
             this.route = switch (routingType) {
                 case BFS -> routeBFS(start, target);
                 case A_STAR -> routeAStar(start, target);
+                case DFS -> routeDFS(start, target);
+                case DIJKSTRA -> routeDijkstra(start, target);
             };
         }
     }
@@ -129,6 +131,72 @@ public class Walker implements Drawable {
         return buildRoute(finishTile);
     }
 
+    private Stack<Way> routeDFS(Tile from, Tile to) {
+        var stack = new Stack<Tile>();
+        var visitedSet = new HashSet<Tile>();
+
+        from.setSourceWay(null);
+        to.setSourceWay(null);
+
+        stack.add(from);
+
+        while (!stack.isEmpty()) {
+            var tile = stack.pop();
+
+            if (tile.equals(to))
+                break;
+
+            visitedSet.add(tile);
+
+            for (var way : tile.getWays()) {
+                var target = way.to();
+                if (target.isPassable() && !visitedSet.contains(target) && !stack.contains(target)) {
+                    target.setSourceWay(way);
+                    stack.add(target);
+                }
+            }
+        }
+
+        return buildRoute(to);
+    }
+
+    private Stack<Way> routeDijkstra(Tile from, Tile to) {
+
+        var openQueue = new PriorityQueue<Tile>();
+        var closeQueue = new PriorityQueue<Tile>();
+
+        from.setSourceWay(null);
+        to.setSourceWay(null);
+
+        from.setF(0);
+        openQueue.add(from);
+
+        while (!openQueue.isEmpty()) {
+            var tile = openQueue.poll();
+            closeQueue.add(tile);
+
+            if (tile.equals(to))
+                break;
+
+            for (var way : tile.getWays()) {
+                var target = way.to();
+
+                if (!target.isPassable() || closeQueue.contains(target))
+                    continue;
+
+                var newF = tile.getF() + 1.0;
+                if (!openQueue.contains(target) || newF < target.getF()) {
+                    target.setSourceWay(way);
+                    target.setF(newF);
+                    if (!openQueue.contains(target))
+                        openQueue.add(target);
+                }
+            }
+        }
+
+        return buildRoute(to);
+    }
+
     private Stack<Way> buildRoute(Tile finishTile) {
         var route = new Stack<Way>();
 
@@ -171,6 +239,6 @@ public class Walker implements Drawable {
     }
 
     public enum RoutingType {
-        BFS, A_STAR
+        BFS, A_STAR, DFS, DIJKSTRA
     }
 }

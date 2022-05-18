@@ -92,4 +92,8 @@ public final class Tile implements Drawable, Comparable<Tile> {
     public int compareTo(Tile o) {
         return (int) (this.f - o.f);
     }
+
+    public double getF() {
+        return f;
+    }
 }

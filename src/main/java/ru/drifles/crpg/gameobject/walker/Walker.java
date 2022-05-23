@@ -184,7 +184,7 @@ public class Walker implements Drawable {
                 if (!target.isPassable() || closeQueue.contains(target))
                     continue;
 
-                var newF = tile.getF() + 1.0;
+                var newF = tile.getF() + way.cost();
                 if (!openQueue.contains(target) || newF < target.getF()) {
                     target.setSourceWay(way);
                     target.setF(newF);

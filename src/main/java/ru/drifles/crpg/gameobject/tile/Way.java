@@ -1,4 +1,4 @@
 package ru.drifles.crpg.gameobject.tile;
 
-public record Way(Tile from, Tile to) {
+public record Way(Tile from, Tile to, int cost) {
 }

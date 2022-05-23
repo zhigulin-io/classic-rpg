@@ -25,6 +25,7 @@ public final class Land implements Drawable {
             int y = 0;
 
             while (mid != null) {
+
                 for (int x = 0; x < mid.length(); x++) {
                     var symbol = mid.charAt(x);
                     if (symbol != '#' && symbol != '.')
@@ -32,29 +33,66 @@ public final class Land implements Drawable {
 
                     var tile = graph.computeIfAbsent(new Position(x, y), p -> new Tile(p, symbol != '#'));
 
-                    if (top != null && x < top.length()) {
-                        var s = top.charAt(x);
-                        if (s == '.' || s == '#')
-                            tile.addWay(graph.computeIfAbsent(new Position(x, y - 1), p -> new Tile(p, s != '#')));
-                    }
-
-                    if (bot != null && x < bot.length()) {
-                        var s = bot.charAt(x);
-                        if (s == '.' || s == '#')
-                            tile.addWay(graph.computeIfAbsent(new Position(x, y + 1), p -> new Tile(p, s != '#')));
-                    }
+                    char leftNeighbor = 0;
+                    char rightNeighbor = 0;
 
                     if (x - 1 >= 0) {
                         var s = mid.charAt(x - 1);
+                        leftNeighbor = s;
                         if (s == '.' || s == '#') {
-                            tile.addWay(graph.computeIfAbsent(new Position(x - 1, y), p -> new Tile(p, s != '#')));
+                            tile.addWay(graph.computeIfAbsent(new Position(x - 1, y), p -> new Tile(p, s != '#')), 10);
                         }
                     }
 
                     if (x + 1 < mid.length()) {
                         var s = mid.charAt(x + 1);
+                        rightNeighbor = s;
                         if (s == '.' || s == '#') {
-                            tile.addWay(graph.computeIfAbsent(new Position(x + 1, y), p -> new Tile(p, s != '#')));
+                            tile.addWay(graph.computeIfAbsent(new Position(x + 1, y), p -> new Tile(p, s != '#')), 10);
+                        }
+                    }
+
+                    if (top != null && x < top.length()) {
+                        var s = top.charAt(x);
+                        if (s == '.' || s == '#')
+                            tile.addWay(graph.computeIfAbsent(new Position(x, y - 1), p -> new Tile(p, s != '#')), 10);
+
+                        if (x - 1 >= 0 && leftNeighbor == '.' && s == '.') {
+                            var d = top.charAt(x - 1);
+                            tile.addWay(
+                                    graph.computeIfAbsent(new Position(x - 1, y - 1), p -> new Tile(p, d != '#')),
+                                    14
+                            );
+                        }
+
+                        if (x + 1 < top.length() && rightNeighbor == '.' && s == '.') {
+                            var d = top.charAt(x + 1);
+                            tile.addWay(
+                                    graph.computeIfAbsent(new Position(x + 1, y - 1), p -> new Tile(p, d != '#')),
+                                    14
+                            );
+                        }
+                    }
+
+                    if (bot != null && x < bot.length()) {
+                        var s = bot.charAt(x);
+                        if (s == '.' || s == '#')
+                            tile.addWay(graph.computeIfAbsent(new Position(x, y + 1), p -> new Tile(p, s != '#')), 10);
+
+                        if (x - 1 >= 0 && leftNeighbor == '.' && s == '.') {
+                            var d = bot.charAt(x - 1);
+                            tile.addWay(
+                                    graph.computeIfAbsent(new Position(x - 1, y + 1), p -> new Tile(p, d != '#')),
+                                    14
+                            );
+                        }
+
+                        if (x + 1 < bot.length() && rightNeighbor == '.' && s == '.') {
+                            var d = bot.charAt(x + 1);
+                            tile.addWay(
+                                    graph.computeIfAbsent(new Position(x + 1, y + 1), p -> new Tile(p, d != '#')),
+                                    14
+                            );
                         }
                     }
                 }

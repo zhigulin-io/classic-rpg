@@ -38,7 +38,11 @@ public class TileRenderer implements Renderer {
             4, 5,
             4, 6,
             4, 7,
-            4, 8
+            4, 8,
+            4, 0,
+            4, 1,
+            4, 2,
+            4, 3
     };
 
     private static final VertexArrayObject VAO = new VertexArrayObject(
@@ -94,18 +98,33 @@ public class TileRenderer implements Renderer {
             SHADER_PROGRAM.setUniform("Color", wayColor.getR(), wayColor.getG(), wayColor.getB());
             for (Way way : tile.getWays()) {
                 if (way.to().isPassable()) {
-                    var offset = Integer.BYTES;
+                    var offset = 0;
 
-                    if (way.to().getPosition().getX() > tile.getPosition().getX())
-                        offset *= 6;
-                    else if (way.to().getPosition().getY() > tile.getPosition().getY())
-                        offset *= 8;
-                    else if (way.to().getPosition().getY() < tile.getPosition().getY())
-                        offset *= 10;
-                    else if (way.to().getPosition().getX() < tile.getPosition().getX())
-                        offset *= 12;
+                    if (way.to().getPosition().getX() > tile.getPosition().getX()) {
+                        if (way.to().getPosition().getY() > tile.getPosition().getY()) {
+                            offset = 20;
+                        } else if (way.to().getPosition().getY() < tile.getPosition().getY()) {
+                            offset = 18;
+                        } else {
+                            offset = 6;
+                        }
+                    } else if (way.to().getPosition().getX() < tile.getPosition().getX()) {
+                        if (way.to().getPosition().getY() > tile.getPosition().getY()) {
+                            offset = 14;
+                        } else if (way.to().getPosition().getY() < tile.getPosition().getY()) {
+                            offset = 16;
+                        } else {
+                            offset = 12;
+                        }
+                    } else {
+                        if (way.to().getPosition().getY() > tile.getPosition().getY()) {
+                            offset = 8;
+                        } else if (way.to().getPosition().getY() < tile.getPosition().getY()) {
+                            offset = 10;
+                        }
+                    }
 
-                    glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, offset);
+                    glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, offset * Integer.BYTES);
                 }
             }
         }

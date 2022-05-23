@@ -26,8 +26,8 @@ public final class Tile implements Drawable, Comparable<Tile> {
         this.renderer = new TileRenderer(this);
     }
 
-    public void addWay(Tile to) {
-        ways.add(new Way(this, to));
+    public void addWay(Tile to, int cost) {
+        ways.add(new Way(this, to, cost));
     }
 
     @Override

@@ -58,7 +58,7 @@ public class Walker implements Drawable {
 
     private Stack<Way> routeAStar(Tile startTile, Tile finishTile) {
         var openQueue = new PriorityQueue<Tile>();
-        var closeQueue = new PriorityQueue<Tile>();
+        var visitedSet = new HashSet<Tile>();
 
         startTile.setSourceWay(null);
         finishTile.setSourceWay(null);
@@ -70,7 +70,7 @@ public class Walker implements Drawable {
 
         while (!openQueue.isEmpty()) {
             var tile = openQueue.poll();
-            closeQueue.add(tile);
+            visitedSet.add(tile);
 
             if (tile.equals(finishTile))
                 break;
@@ -78,10 +78,10 @@ public class Walker implements Drawable {
             for (var way : tile.getWays()) {
                 var target = way.to();
 
-                if (!target.isPassable() || closeQueue.contains(target))
+                if (!target.isPassable() || visitedSet.contains(target))
                     continue;
 
-                var newG = tile.getG() + 1.0;
+                var newG = tile.getG() + way.cost();
                 if (!openQueue.contains(target) || newG < target.getG()) {
                     target.setSourceWay(way);
                     target.setG(newG);
@@ -227,7 +227,8 @@ public class Walker implements Drawable {
                 position.setX(position.getX() - moveSpeed);
             else if (dX > 0)
                 position.setX(position.getX() + moveSpeed);
-            else if (dY < 0)
+
+            if (dY < 0)
                 position.setY(position.getY() - moveSpeed);
             else if (dY > 0)
                 position.setY(position.getY() + moveSpeed);

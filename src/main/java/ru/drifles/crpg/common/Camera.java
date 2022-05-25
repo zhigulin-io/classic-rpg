@@ -2,7 +2,7 @@ package ru.drifles.crpg.common;
 
 import org.joml.Matrix4f;
 
-public class Camera {
+public final class Camera {
     private static final int TILES_NUMBER = 16;
     private static final float CAMERA_OFFSET = -0.5f;
     private static final float LEFT_POSITION = CAMERA_OFFSET;
@@ -23,4 +23,6 @@ public class Camera {
             NEAR_POSITION,
             FAR_POSITION
     );
+
+    private Camera() {  }
 }

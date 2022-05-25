@@ -6,8 +6,12 @@ import ru.drifles.crpg.callback.MouseButtonCallback;
 import ru.drifles.crpg.callback.WindowCloseCallback;
 import ru.drifles.crpg.common.Time;
 import ru.drifles.crpg.config.Properties;
-import ru.drifles.crpg.container.World;
+import ru.drifles.crpg.gameobject.World;
+import ru.drifles.crpg.renderer.TileRenderer;
+import ru.drifles.crpg.renderer.WalkerRenderer;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -19,7 +23,15 @@ import static org.lwjgl.opengl.GL32.GL_PROGRAM_POINT_SIZE;
 public class ClassicRPG {
     private static final Logger LOG = Logger.getLogger(ClassicRPG.class.getName());
 
-    private static final ClassicRPG instance = new ClassicRPG();
+    private static final ClassicRPG instance;
+
+    static {
+        try {
+            instance = new ClassicRPG();
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void main(String[] args) {
         instance.launch();
@@ -36,7 +48,7 @@ public class ClassicRPG {
         return world;
     }
 
-    private ClassicRPG() {
+    private ClassicRPG() throws URISyntaxException, IOException {
         this.window = createWindow();
         configOpenGLFeatures();
 
@@ -49,7 +61,13 @@ public class ClassicRPG {
             var beginTime = glfwGetTime();
             glClear(GL_COLOR_BUFFER_BIT);
 
-            world.draw();
+            for (int y = 0; y < world.getLand().getGraph().length; y++) {
+                for (int x = 0; x < world.getLand().getGraph()[y].length; x++) {
+                    TileRenderer.render(world.getLand().getGraph()[y][x]);
+                }
+            }
+
+            WalkerRenderer.render(world.getWalker());
 
             glfwSwapBuffers(window);
             var endTime = glfwGetTime();

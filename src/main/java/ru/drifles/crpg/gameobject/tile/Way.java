@@ -1,4 +1,6 @@
 package ru.drifles.crpg.gameobject.tile;
 
-public record Way(Tile from, Tile to, int cost) {
+import ru.drifles.crpg.common.Position;
+
+public record Way(Position source, Position destination, int cost) {
 }

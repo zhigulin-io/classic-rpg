@@ -1,6 +1,6 @@
 package ru.drifles.crpg.common;
 
-public class Time {
+public final class Time {
 
     public static double delta = 0;
 

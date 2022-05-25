@@ -2,9 +2,8 @@ package ru.drifles.crpg.callback;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
-import ru.drifles.crpg.common.Camera;
 import ru.drifles.crpg.ClassicRPG;
-import ru.drifles.crpg.common.Position;
+import ru.drifles.crpg.common.Camera;
 import ru.drifles.crpg.config.Properties;
 
 import java.nio.DoubleBuffer;
@@ -29,15 +28,13 @@ public class MouseButtonCallback extends GLFWMouseButtonCallback {
         if (action == GLFW_RELEASE) {
             var tileX = (int) (xPositionBuffer.get(0) / Properties.windowWidth * TILES_WIDTH);
             var tileY = (int) (yPositionBuffer.get(0) / Properties.windowHeight * TILES_HEIGHT);
-            var tile = graph.get(new Position(tileX, tileY));
+            var tile = graph[tileY][tileX];
 
-            if (tile != null && tile.isPassable()) {
-
+            if (tile.passable()) {
                 switch (button) {
-                    case GLFW_MOUSE_BUTTON_LEFT -> walker.setPosition(tile);
-                    case GLFW_MOUSE_BUTTON_RIGHT -> walker.setTarget(tile);
+                    case GLFW_MOUSE_BUTTON_LEFT -> walker.setPosition(tile.position());
+                    case GLFW_MOUSE_BUTTON_RIGHT -> walker.setTarget(tile.position());
                 }
-
             }
         }
     }

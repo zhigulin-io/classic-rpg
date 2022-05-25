@@ -1,4 +1,4 @@
-package ru.drifles.crpg.gameobject.walker;
+package ru.drifles.crpg.renderer;
 
 import org.joml.Matrix4f;
 import ru.drifles.crpg.accessory.BufferObject;
@@ -6,11 +6,11 @@ import ru.drifles.crpg.accessory.ShaderProgram;
 import ru.drifles.crpg.accessory.VertexArrayObject;
 import ru.drifles.crpg.accessory.VertexAttribPointer;
 import ru.drifles.crpg.common.Color;
-import ru.drifles.crpg.common.Renderer;
+import ru.drifles.crpg.gameobject.walker.Walker;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class WalkerRenderer implements Renderer {
+public class WalkerRenderer {
 
     private static final ShaderProgram SHADER_PROGRAM = new ShaderProgram(
             "/world/tileVS.glsl",
@@ -43,22 +43,30 @@ public class WalkerRenderer implements Renderer {
 
     private static final Matrix4f MODEL_MATRIX = new Matrix4f().identity();
 
-    private final Matrix4f viewMatrix;
-    private final Color color = Color.GREEN;
-    private final Walker walker;
+    private WalkerRenderer() {  }
 
-    public WalkerRenderer(Walker walker) {
-        this.walker = walker;
-        this.viewMatrix = new Matrix4f().translate(walker.getPosition().getX(), walker.getPosition().getY(), 0.0f);
-    }
+    public static void render(Walker walker) {
+        var viewMatrix = new Matrix4f().setTranslation(walker.getPosition().x(), walker.getPosition().y(), 0);
 
-    @Override
-    public void render() {
-        this.viewMatrix.setTranslation(walker.getPosition().getX(), walker.getPosition().getY(), 0.0f);
+        if (walker.getRoute() != null) {
+            var step = walker.getRoute().peek();
+            float stepSize = 1.0f / step.cost();
+
+            var stepNumber = walker.getStepNumber();
+            var dX = step.destination().x() - step.source().x();
+            var dY = step.destination().y() - step.source().y();
+
+            viewMatrix.setTranslation(
+                    walker.getPosition().x() + stepNumber * stepSize * dX,
+                    walker.getPosition().y() + stepNumber * stepSize * dY,
+                    0.0f
+            );
+            walker.move();
+        }
 
         SHADER_PROGRAM.use();
 
-        SHADER_PROGRAM.setUniform("Color", color.getR(), color.getG(), color.getB());
+        SHADER_PROGRAM.setUniform("Color", Color.GREEN.getR(), Color.GREEN.getG(), Color.GREEN.getB());
         SHADER_PROGRAM.setUniformMatrix("model", MODEL_MATRIX);
         SHADER_PROGRAM.setUniformMatrix("view", viewMatrix);
 

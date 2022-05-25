@@ -1,85 +1,71 @@
 package ru.drifles.crpg.gameobject.walker;
 
-import ru.drifles.crpg.ClassicRPG;
-import ru.drifles.crpg.common.Drawable;
 import ru.drifles.crpg.common.Position;
-import ru.drifles.crpg.common.Renderer;
-import ru.drifles.crpg.common.Time;
-import ru.drifles.crpg.gameobject.tile.Tile;
+import ru.drifles.crpg.gameobject.Land;
 import ru.drifles.crpg.gameobject.tile.Way;
 
 import java.util.Stack;
 
-public class Walker implements Drawable {
-    private final Position position;
-    private final Renderer renderer;
+public class Walker {
+    private Position position;
     private Stack<Way> route;
     private RoutingType routingType;
+    private int stepNumber;
 
-    public Walker(Position position) {
+    private final Land land;
+
+
+    public Walker(Land land, Position position) {
         this.position = position;
-        this.renderer = new WalkerRenderer(this);
         this.route = null;
         this.routingType = RoutingType.A_STAR;
+        this.land = land;
+        this.stepNumber = 0;
+    }
+
+    public void setTarget(Position target) {
+        if (route == null) {
+            this.route = switch (routingType) {
+                case BFS -> land.routeBFS(position, target);
+                case A_STAR -> land.routeAStar(position, target);
+                case DFS -> land.routeDFS(position, target);
+                case DIJKSTRA -> land.routeDijkstra(position, target);
+            };
+        }
+    }
+
+    public void move() {
+        var step = route.peek();
+
+        if (stepNumber == step.cost()) {
+            route.pop();
+            stepNumber = 0;
+            position = new Position(step.destination().x(), step.destination().y());
+            if (route.size() == 0)
+                route = null;
+        } else {
+            stepNumber++;
+        }
+    }
+
+    public void setRoutingType(RoutingType routingType) {
+        this.routingType = routingType;
     }
 
     public Position getPosition() {
         return position;
     }
 
-    public void setPosition(Tile tile) {
-        this.route = null;
-        this.position.setXY(tile.getPosition().getX(), tile.getPosition().getY());
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
-    public void setTarget(Tile target) {
-        if (route == null) {
-            var land = ClassicRPG.getInstance().getWorld().getLand();
-            var start = land.getGraph().get(position);
-
-
-            this.route = switch (routingType) {
-                case BFS -> land.routeBFS(start, target);
-                case A_STAR -> land.routeAStar(start, target);
-                case DFS -> land.routeDFS(start, target);
-                case DIJKSTRA -> land.routeDijkstra(start, target);
-            };
-        }
+    public Stack<Way> getRoute() {
+        return route;
     }
 
-    @Override
-    public void draw() {
-        if (route != null)
-            move();
-
-        renderer.render();
-    }
-
-    private void move() {
-        float dX = route.peek().to().getPosition().getX() - position.getX();
-        float dY = route.peek().to().getPosition().getY() - position.getY();
-
-        float moveSpeed = (float) (5.0f * Time.delta);
-        if (Math.abs(dX) < moveSpeed && Math.abs(dY) < moveSpeed) {
-            var tile = route.pop();
-            if (route.size() == 0)
-                route = null;
-            position.setXY(tile.to().getPosition().getX(), tile.to().getPosition().getY());
-        } else {
-            if (dX < 0)
-                position.setX(position.getX() - moveSpeed);
-            else if (dX > 0)
-                position.setX(position.getX() + moveSpeed);
-
-            if (dY < 0)
-                position.setY(position.getY() - moveSpeed);
-            else if (dY > 0)
-                position.setY(position.getY() + moveSpeed);
-        }
-    }
-
-    public void setRoutingType(RoutingType routingType) {
-        this.routingType = routingType;
+    public int getStepNumber() {
+        return stepNumber;
     }
 
     public enum RoutingType {

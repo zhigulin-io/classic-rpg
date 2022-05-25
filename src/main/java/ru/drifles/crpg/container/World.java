@@ -5,7 +5,7 @@ import ru.drifles.crpg.common.Position;
 import ru.drifles.crpg.gameobject.walker.Walker;
 
 public class World implements Drawable {
-    private final Land land = new Land();
+    private final Land land = new Land("/level1.world");
     private final Walker walker = new Walker(new Position(1, 1));
 
     @Override

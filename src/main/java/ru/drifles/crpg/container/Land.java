@@ -15,8 +15,8 @@ public final class Land implements Drawable {
 
     private final Map<Position, Tile> graph = new HashMap<>();
 
-    public Land() {
-        var worldURL = getClass().getResource("/level1.world");
+    public Land(String levelName) {
+        var worldURL = getClass().getResource(levelName);
 
         try (var file = new BufferedReader(new FileReader(new File(Objects.requireNonNull(worldURL).toURI())))) {
             String top = null;

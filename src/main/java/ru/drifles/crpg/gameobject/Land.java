@@ -1,5 +1,6 @@
 package ru.drifles.crpg.gameobject;
 
+import ru.drifles.crpg.common.Camera;
 import ru.drifles.crpg.common.Position;
 import ru.drifles.crpg.gameobject.tile.Tile;
 import ru.drifles.crpg.gameobject.tile.Way;
@@ -32,7 +33,12 @@ public final class Land {
             }
         }
 
+        Camera.setTilesNumber(graph.length);
+
         for (int y = 0; y < graph.length; y++) {
+            if (graph[y].length > Camera.getTilesNumber())
+                Camera.setTilesNumber(graph[y].length);
+
             for (int x = 0; x < graph[y].length; x++) {
                 var tile = graph[y][x];
                 if (tile.passable()) {

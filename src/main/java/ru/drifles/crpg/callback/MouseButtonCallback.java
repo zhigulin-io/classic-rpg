@@ -11,10 +11,6 @@ import java.nio.DoubleBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class MouseButtonCallback extends GLFWMouseButtonCallback {
-
-    private static final double TILES_WIDTH = Camera.WIDTH;
-    private static final double TILES_HEIGHT = Camera.HEIGHT;
-
     private final DoubleBuffer xPositionBuffer = BufferUtils.createDoubleBuffer(1);
     private final DoubleBuffer yPositionBuffer = BufferUtils.createDoubleBuffer(1);
 
@@ -26,14 +22,16 @@ public class MouseButtonCallback extends GLFWMouseButtonCallback {
         glfwGetCursorPos(window, xPositionBuffer, yPositionBuffer);
 
         if (action == GLFW_RELEASE) {
-            var tileX = (int) (xPositionBuffer.get(0) / Properties.windowWidth * TILES_WIDTH);
-            var tileY = (int) (yPositionBuffer.get(0) / Properties.windowHeight * TILES_HEIGHT);
-            var tile = graph[tileY][tileX];
+            var tileX = (int) (xPositionBuffer.get(0) / Properties.windowWidth * Camera.getTilesNumber());
+            var tileY = (int) (yPositionBuffer.get(0) / Properties.windowHeight * Camera.getTilesNumber());
 
-            if (tile.passable()) {
-                switch (button) {
-                    case GLFW_MOUSE_BUTTON_LEFT -> walker.setPosition(tile.position());
-                    case GLFW_MOUSE_BUTTON_RIGHT -> walker.setTarget(tile.position());
+            if (tileY < graph.length && tileX < graph[tileY].length) {
+                var tile = graph[tileY][tileX];
+                if (tile.passable()) {
+                    switch (button) {
+                        case GLFW_MOUSE_BUTTON_LEFT -> walker.setPosition(tile.position());
+                        case GLFW_MOUSE_BUTTON_RIGHT -> walker.setTarget(tile.position());
+                    }
                 }
             }
         }

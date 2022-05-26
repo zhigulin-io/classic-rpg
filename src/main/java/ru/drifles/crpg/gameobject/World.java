@@ -11,7 +11,7 @@ public class World {
     private final Walker walker;
 
     public World() throws URISyntaxException, IOException {
-        this.land = new Land("/level1.world");
+        this.land = new Land("/level_small_3.world");
         this.walker = new Walker(land, new Position(1, 1));
     }
 

@@ -14,7 +14,6 @@ public class Walker {
 
     private final Land land;
 
-
     public Walker(Land land, Position position) {
         this.position = position;
         this.route = null;
@@ -25,6 +24,7 @@ public class Walker {
 
     public void setTarget(Position target) {
         if (route == null) {
+            this.stepNumber = 0;
             this.route = switch (routingType) {
                 case BFS -> land.routeBFS(position, target);
                 case A_STAR -> land.routeAStar(position, target);
@@ -57,6 +57,8 @@ public class Walker {
     }
 
     public void setPosition(Position position) {
+        this.stepNumber = 0;
+        this.route = null;
         this.position = position;
     }
 

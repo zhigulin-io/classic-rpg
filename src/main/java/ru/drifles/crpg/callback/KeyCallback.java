@@ -19,6 +19,8 @@ public class KeyCallback extends GLFWKeyCallback {
             ClassicRPG.getInstance().getWorld().getWalker().setRoutingType(Walker.RoutingType.DFS);
         } else if (key == GLFW_KEY_4) {
             ClassicRPG.getInstance().getWorld().getWalker().setRoutingType(Walker.RoutingType.DIJKSTRA);
+        } else if (key == GLFW_KEY_0) {
+            ClassicRPG.getInstance().getWorld().getWalker().setRoutingType(Walker.RoutingType.CUSTOM);
         }
     }
 }

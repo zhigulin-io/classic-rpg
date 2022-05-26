@@ -30,6 +30,7 @@ public class Walker {
                 case A_STAR -> land.routeAStar(position, target);
                 case DFS -> land.routeDFS(position, target);
                 case DIJKSTRA -> land.routeDijkstra(position, target);
+                case CUSTOM -> land.routeCustom(position, target);
             };
         }
     }
@@ -71,6 +72,6 @@ public class Walker {
     }
 
     public enum RoutingType {
-        BFS, A_STAR, DFS, DIJKSTRA
+        BFS, A_STAR, DFS, DIJKSTRA, CUSTOM
     }
 }

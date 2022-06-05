@@ -1,14 +1,14 @@
 package ru.drifles.crpg;
 
-import ru.drifles.crpg.callback.ErrorCallback;
-import ru.drifles.crpg.callback.KeyCallback;
-import ru.drifles.crpg.callback.MouseButtonCallback;
-import ru.drifles.crpg.callback.WindowCloseCallback;
-import ru.drifles.crpg.common.Time;
-import ru.drifles.crpg.config.Properties;
-import ru.drifles.crpg.gameobject.World;
-import ru.drifles.crpg.renderer.TileRenderer;
-import ru.drifles.crpg.renderer.WalkerRenderer;
+import ru.drifles.crpg.controller.ErrorCallback;
+import ru.drifles.crpg.controller.KeyCallback;
+import ru.drifles.crpg.controller.MouseButtonCallback;
+import ru.drifles.crpg.controller.WindowCloseCallback;
+import ru.drifles.crpg.view.Time;
+import ru.drifles.crpg.view.Properties;
+import ru.drifles.crpg.model.World;
+import ru.drifles.crpg.view.TileRenderer;
+import ru.drifles.crpg.view.WalkerRenderer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
